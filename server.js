@@ -28,10 +28,11 @@ app.get('/api/hello', (req, res) => {
 
 app.get('/api/timestamp/:timestamp', (req, res) => {
   const timeInput = new Date(req.params.timestamp);
+  const unixTime = Math.floor(timeInput / 1000);
   // eslint-disable-next-line no-self-compare
   if (timeInput.getTime() === timeInput.getTime()) {
     console.log(timeInput);
-    res.json({ unix: timeInput.toUTCString(), utc: timeInput.toUTCString() });
+    res.json({ unix: unixTime, utc: timeInput.toUTCString() });
   } else res.json({ error: 'Invalid Date' });
 });
 
