@@ -26,12 +26,23 @@ app.get('/api/hello', (req, res) => {
   res.json({ greeting: 'hello API' });
 });
 
+app.get('/api/timestamp', (req, res) => {
+  const noTime = new Date();
+  const noUnixTime = Math.floor(noTime / 1000);
+  res.json({ unix: noUnixTime, utc: noTime.toUTCString() });
+});
+
 app.get('/api/timestamp/:timestamp', (req, res) => {
-  const timeInput = new Date(req.params.timestamp);
+  console.log(req);
+  let timeInput;
+  if (req.params) {
+    timeInput = new Date(req.params.timestamp);
+  } else {
+    timeInput = new Date();
+  }
   const unixTime = Math.floor(timeInput / 1000);
   // eslint-disable-next-line no-self-compare
   if (timeInput.getTime() === timeInput.getTime()) {
-    console.log(timeInput);
     res.json({ unix: unixTime, utc: timeInput.toUTCString() });
   } else res.json({ error: 'Invalid Date' });
 });
